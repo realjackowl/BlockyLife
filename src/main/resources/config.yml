@@ -1,0 +1,14 @@
+Version: 1
+AFKCheck: 700
+Modules:
+  Pulse:
+    Enabled: true
+    Settings:
+      ValueDisplay: ActionBar
+      MessageDisplay: Title
+    Translation:
+      Titles:
+        CalmTitle: "&cSlow Down"
+        CalmSubtitle: "&cNOW"
+        MoveTitle: "&cMove"
+        MoveSubtitle: "&cNOW"
