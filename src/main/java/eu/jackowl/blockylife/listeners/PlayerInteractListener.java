@@ -14,6 +14,7 @@ public record PlayerInteractListener(BlockyLife blockyLife) implements Listener 
     private void onInteract(@NotNull PlayerInteractEvent e) {
         final UUID playerUUID = e.getPlayer().getUniqueId();
         blockyLife.getAfkList().remove(playerUUID);
-        if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) blockyLife.setPulse(playerUUID, blockyLife.getPulse(playerUUID) + 1.5);
+        if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK))
+            blockyLife.setPulse(playerUUID, blockyLife.getPulse(playerUUID) + blockyLife.getLeftClickModifier());
     }
 }

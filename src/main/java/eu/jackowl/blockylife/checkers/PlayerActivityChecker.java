@@ -20,11 +20,11 @@ public record PlayerActivityChecker(BlockyLife blockyLife, @NotNull BukkitSchedu
                             final double playerPulse = blockyLife.getPulse(playerUUID);
                             if (!blockyLife.getAfkList().contains(playerUUID)) {
                                 if (playerPulse > 80) {
-                                    blockyLife.setPulse(playerUUID, playerPulse - 1.25);
+                                    blockyLife.setPulse(playerUUID, playerPulse - blockyLife.getStillHigher80Modifier());
                                 } else if (playerPulse < 80 && playerPulse > 60) {
-                                    blockyLife.setPulse(playerUUID, playerPulse - 0.15);
+                                    blockyLife.setPulse(playerUUID, playerPulse - blockyLife.getStillLower80Modifier());
                                 } else if (playerPulse < 60) {
-                                    blockyLife.setPulse(playerUUID, playerPulse - 0.05);
+                                    blockyLife.setPulse(playerUUID, playerPulse - blockyLife.getStillLower60Modifier());
                                 }
                             }
                         }

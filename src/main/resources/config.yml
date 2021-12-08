@@ -1,4 +1,4 @@
-Version: 1
+Version: 2
 AFKCheck: 700
 Modules:
   Pulse:
@@ -6,6 +6,16 @@ Modules:
     Settings:
       ValueDisplay: ActionBar
       MessageDisplay: Title
+      Modifiers:
+        LEFT_CLICK: 1.5
+        JUMP: 1.0
+        JUMP_SPRINT: 2.0
+        MOVE: 0.025
+        MOVE_LOWER_80: 0.0005
+        SPRINT: 0.1
+        STILL_HIGHER_80: 1.25
+        STILL_LOWER_80: 0.15
+        STILL_LOWER_60: 0.05
     Translation:
       Titles:
         CalmTitle: "&cSlow Down"

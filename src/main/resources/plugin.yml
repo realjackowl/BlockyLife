@@ -1,6 +1,6 @@
 main: eu.jackowl.blockylife.BlockyLife
 name: BlockyLife
-version: 0.2.1
+version: 0.3.3
 description: Everything we know from the real world.
 api-version: 1.18
 authors: [jackowl]

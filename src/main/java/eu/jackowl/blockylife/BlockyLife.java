@@ -5,6 +5,7 @@ import eu.jackowl.blockylife.checkers.PlayerActivityChecker;
 import eu.jackowl.blockylife.checkers.PulseChecker;
 import eu.jackowl.blockylife.display.ActionBarDisplay;
 import eu.jackowl.blockylife.listeners.*;
+import eu.jackowl.blockylife.managers.ConfigManager;
 import eu.jackowl.blockylife.managers.PlayerDataManager;
 import eu.jackowl.blockylife.managers.WorldManager;
 import eu.jackowl.blockylife.modules.PulseModule;
@@ -20,6 +21,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class BlockyLife extends JavaPlugin {
@@ -66,6 +68,57 @@ public class BlockyLife extends JavaPlugin {
 
     public File dataFolder = this.getDataFolder();
 
+    private final double leftClickModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.LEFT_CLICK");
+
+    public Double getLeftClickModifier() {
+        return leftClickModifier;
+    }
+
+    private final double jumpModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.JUMP");
+
+    public Double getJumpModifier() {
+        return jumpModifier;
+    }
+
+    private final double jumpSprintModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.JUMP_SPRINT");
+
+    public Double getJumpSprintModifier() {
+        return jumpSprintModifier;
+    }
+
+    private final double moveModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.MOVE");
+
+    public Double getMoveModifier() { return moveModifier; }
+
+    private final double moveLower80Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.MOVE_LOWER_80");
+
+    public Double getMoveLower80Modifier() {
+        return moveLower80Modifier;
+    }
+
+    private final double sprintModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.SPRINT");
+
+    public Double getSprintModifier() {
+        return sprintModifier;
+    }
+
+    private final double stillHigher80Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.STILL_HIGHER_80");
+
+    public Double getStillHigher80Modifier() {
+        return stillHigher80Modifier;
+    }
+
+    private final double stillLower80Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.STILL_LOWER_80");
+
+    public Double getStillLower80Modifier() {
+        return stillLower80Modifier;
+    }
+
+    private final double stillLower60Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.STILL_LOWER_60");
+
+    public Double getStillLower60Modifier() { return stillLower60Modifier; }
+
+
     private void initDisplay() {
         sendConsoleMessage("[BlockyLife] Loading display...");
         if (getConfig().getBoolean("Modules.Pulse.Enabled")) {
@@ -104,6 +157,7 @@ public class BlockyLife extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        new ConfigManager(this).updateConfig();
         reloadConfig();
         initWorlds();
         initListeners();
