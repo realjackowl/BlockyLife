@@ -3,7 +3,6 @@ package eu.jackowl.blockylife.checkers;
 import eu.jackowl.blockylife.BlockyLife;
 import eu.jackowl.blockylife.managers.PlayerDataManager;
 import eu.jackowl.blockylife.modules.PulseModule;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -13,9 +12,11 @@ import java.util.UUID;
 
 public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitScheduler, PulseModule pulseModule) {
 
-    //private Pattern hexPattern = Pattern.compile("#[-fA-f0-9]{6}");
-
     public void runChecker() {
+        final String calmTitle = BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.CalmTitle")));
+        final String calmSubtitle = BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.CalmSubtitle")));
+        final String moveTitle = BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.MoveTitle")));
+        final String moveSubtitle = BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.MoveSubtitle")));
         bukkitScheduler.scheduleSyncRepeatingTask(blockyLife, () ->
         {
             if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
@@ -34,7 +35,7 @@ public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitSchedule
                                         PlayerDataManager.saveData(playerUUID, blockyLife);
                                     } else if (playerPulse > 190.00 && playerPulse < 220.00) {
                                         pulseModule.sendBreath(p);
-                                        p.sendTitle(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.CalmTitle"))), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.CalmSubtitle"))), 10, 70, 20);
+                                        p.sendTitle(calmTitle, calmSubtitle, 10, 70, 20);
                                         //p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Messages.Slowdown"))));
                                     } else if (playerPulse > 100.00 && playerPulse < 190.00) {
                                         pulseModule.sendBreath(p);
@@ -42,7 +43,7 @@ public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitSchedule
                                     //else if (playerPulse < 60.00 && playerPulse > 30.00) {
                                     //}
                                     else if (playerPulse < 30.00 && playerPulse > 20.00) {
-                                        p.sendTitle(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.MoveTitle"))), ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Titles.MoveSubtitle"))), 10, 70, 20);
+                                        p.sendTitle(moveTitle, moveSubtitle, 10, 70, 20);
                                         //p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Messages.Slowdown"))));
                                     } else if (playerPulse < 20.00) {
                                         bukkitScheduler.runTask(blockyLife, () -> killPlayer(p));

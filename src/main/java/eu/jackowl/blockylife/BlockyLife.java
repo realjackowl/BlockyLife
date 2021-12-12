@@ -10,6 +10,7 @@ import eu.jackowl.blockylife.managers.PlayerDataManager;
 import eu.jackowl.blockylife.managers.WorldManager;
 import eu.jackowl.blockylife.modules.PulseModule;
 import eu.jackowl.blockylife.placeholders.PlaceholderAPI;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -21,8 +22,9 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BlockyLife extends JavaPlugin {
 
@@ -88,7 +90,9 @@ public class BlockyLife extends JavaPlugin {
 
     private final double moveModifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.MOVE");
 
-    public Double getMoveModifier() { return moveModifier; }
+    public Double getMoveModifier() {
+        return moveModifier;
+    }
 
     private final double moveLower80Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.MOVE_LOWER_80");
 
@@ -116,8 +120,9 @@ public class BlockyLife extends JavaPlugin {
 
     private final double stillLower60Modifier = getConfig().getDouble("Modules.Pulse.Settings.Modifiers.STILL_LOWER_60");
 
-    public Double getStillLower60Modifier() { return stillLower60Modifier; }
-
+    public Double getStillLower60Modifier() {
+        return stillLower60Modifier;
+    }
 
     private void initDisplay() {
         sendConsoleMessage("[BlockyLife] Loading display...");
@@ -197,5 +202,16 @@ public class BlockyLife extends JavaPlugin {
         for (final Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener, this);
         }
+    }
+
+    public static String translateMessage(String messageString) {
+        Pattern messagePattern = Pattern.compile("#[a-fA-F0-9]{6}");
+        Matcher messageMatcher = messagePattern.matcher(messageString);
+        while (messageMatcher.find()) {
+            String color = messageString.substring(messageMatcher.start(), messageMatcher.end());
+            messageString = messageString.replace(color, ChatColor.of(color) + "");
+            messageMatcher = messagePattern.matcher(messageString);
+        }
+        return ChatColor.translateAlternateColorCodes('&', messageString);
     }
 }
