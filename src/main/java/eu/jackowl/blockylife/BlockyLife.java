@@ -15,6 +15,9 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -125,6 +128,10 @@ public class BlockyLife extends JavaPlugin {
         return stillLower60Modifier;
     }
 
+    private final BossBar bossBar = Bukkit.createBossBar("Time", BarColor.BLUE, BarStyle.SOLID);
+
+    public BossBar getBossBar() { return bossBar; }
+
     private void initModules() {
         if (getConfig().getBoolean("Modules.Pulse.Enabled")) {
             sendConsoleMessage("[BlockyLife] Loading Pulse module..");
@@ -142,7 +149,7 @@ public class BlockyLife extends JavaPlugin {
         }
         if (getConfig().getBoolean("Modules.Time.Enabled")) {
             sendConsoleMessage("[BlockyLife] Loading Time module...");
-            new TimeModule(this, bukkitScheduler).startModule();
+            new TimeModule(this, bukkitScheduler, bossBar).startModule();
             sendConsoleMessage("[BlockyLife] Success!");
         }
     }
@@ -174,6 +181,7 @@ public class BlockyLife extends JavaPlugin {
     public void onDisable() {
         if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for (final Player p : Bukkit.getOnlinePlayers()) {
+                bossBar.removeAll();
                 UUID playerUUID = p.getUniqueId();
                 PlayerDataManager.saveData(playerUUID, this);
                 this.removePulse(playerUUID);

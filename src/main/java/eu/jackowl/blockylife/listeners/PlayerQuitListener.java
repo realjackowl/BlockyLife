@@ -2,6 +2,7 @@ package eu.jackowl.blockylife.listeners;
 
 import eu.jackowl.blockylife.BlockyLife;
 import eu.jackowl.blockylife.managers.PlayerDataManager;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -13,9 +14,15 @@ public record PlayerQuitListener(BlockyLife blockyLife) implements Listener {
 
     @EventHandler
     private void onQuit(@NotNull PlayerQuitEvent e) {
-        UUID playerUUID = e.getPlayer().getUniqueId();
-        PlayerDataManager.saveData(playerUUID, blockyLife);
-        blockyLife.removePulse(playerUUID);
-        blockyLife.getAfkList().remove(playerUUID);
+        Player p = e.getPlayer();
+        UUID playerUUID = p.getUniqueId();
+        if (blockyLife.getConfig().getBoolean("Modules.Pulse.Enabled")) {
+            PlayerDataManager.saveData(playerUUID, blockyLife);
+            blockyLife.removePulse(playerUUID);
+            blockyLife.getAfkList().remove(playerUUID);
+        }
+        if (blockyLife.getConfig().getBoolean("Modules.Time.Enabled")) {
+            blockyLife.getBossBar().removePlayer(p);
+        }
     }
 }

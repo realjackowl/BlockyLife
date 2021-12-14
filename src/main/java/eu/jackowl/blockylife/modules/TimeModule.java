@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.Collection;
 import java.util.Objects;
 
-public record TimeModule(BlockyLife blockyLife, BukkitScheduler bukkitScheduler) {
+public record TimeModule(BlockyLife blockyLife, BukkitScheduler bukkitScheduler, BossBar bossBar) {
 
     public void startModule() {
         if (Objects.equals(blockyLife.getConfig().getString("Modules.Time.Settings.SynchronizeTime"), "true")) {
@@ -34,19 +34,19 @@ public record TimeModule(BlockyLife blockyLife, BukkitScheduler bukkitScheduler)
         final World mainWorld = Bukkit.getServer().getWorld(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.MainWorld")));
         if (Objects.equals(blockyLife.getConfig().getString("Modules.Time.Settings.TimeFormat"), "24H")) {
             switch (Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.TimeDisplay"))) {
-                case "ActionBar" -> bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
-                    final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-                    if (!onlinePlayers.isEmpty()) {
-                        final long gameTime = Objects.requireNonNull(mainWorld).getTime();
-                        final String timeHours = String.format("%02d", (gameTime / 1000L + 6L) % 24L);
-                        final String timeMinutes = String.format("%02d", gameTime % 1000L * 60L / 1000L);
-                        for (final Player p : onlinePlayers) {
-                            blockyLife.sendActionBarMessage(p, BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.ValueFormat")).replace("{0}", timeHours).replace("{1}", timeMinutes)));
+                case "ActionBar":
+                    bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
+                        final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+                        if (!onlinePlayers.isEmpty()) {
+                            final long gameTime = Objects.requireNonNull(mainWorld).getTime();
+                            final String timeHours = String.format("%02d", (gameTime / 1000L + 6L) % 24L);
+                            final String timeMinutes = String.format("%02d", gameTime % 1000L * 60L / 1000L);
+                            for (final Player p : onlinePlayers) {
+                                blockyLife.sendActionBarMessage(p, BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.ValueFormat")).replace("{0}", timeHours).replace("{1}", timeMinutes)));
+                            }
                         }
-                    }
-                }, 0L, 0L);
-                case "BossBar" -> {
-                    final BossBar bossBar = Bukkit.createBossBar("Time", BarColor.BLUE, BarStyle.SOLID);
+                    }, 0L, 0L);
+                case "BossBar":
                     bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
                         final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
                         if (!onlinePlayers.isEmpty()) {
@@ -68,28 +68,31 @@ public record TimeModule(BlockyLife blockyLife, BukkitScheduler bukkitScheduler)
                             }
                         }
                     }, 0L, 0L);
-                }
+                default:
+                    //blockyLife.sendConsoleMessage();
+                    break;
             }
-        } else if (Objects.equals(blockyLife.getConfig().getString("Modules.Time.Settings.TimeFormat"), "12H")) {
+        } else {
             switch (Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.TimeDisplay"))) {
-                case "ActionBar" -> bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
-                    final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-                    if (!onlinePlayers.isEmpty()) {
-                        boolean isPM = false;
-                        final long gameTime = Objects.requireNonNull(mainWorld).getTime();
-                        long currentHour = (gameTime / 1000L + 6L) % 24L;
-                        if (currentHour > 12) {
-                            currentHour -= 12L;
-                            isPM = true;
+                case "ActionBar":
+                    bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
+                        final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
+                        if (!onlinePlayers.isEmpty()) {
+                            boolean isPM = false;
+                            final long gameTime = Objects.requireNonNull(mainWorld).getTime();
+                            long currentHour = (gameTime / 1000L + 6L) % 24L;
+                            if (currentHour > 12) {
+                                currentHour -= 12L;
+                                isPM = true;
+                            }
+                            final String timeHours = Long.toString(currentHour);
+                            final String timeMinutes = String.format("%02d", gameTime % 1000L * 60L / 1000L);
+                            for (final Player p : onlinePlayers) {
+                                blockyLife.sendActionBarMessage(p, BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.ValueFormat")).replace("{0}", timeHours).replace("{1}", timeMinutes).replace("{2}", isPM ? "PM" : "AM")));
+                            }
                         }
-                        final String timeHours = Long.toString(currentHour);
-                        final String timeMinutes = String.format("%02d", gameTime % 1000L * 60L / 1000L);
-                        for (final Player p : onlinePlayers) {
-                            blockyLife.sendActionBarMessage(p, BlockyLife.translateMessage(Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Time.Settings.ValueFormat")).replace("{0}", timeHours).replace("{1}", timeMinutes).replace("{2}", isPM ? "PM" : "AM")));
-                        }
-                    }
-                }, 0L, 0L);
-                case "BossBar" -> {
+                    }, 0L, 0L);
+                case "BossBar":
                     final BossBar bossBar = Bukkit.createBossBar("Time", BarColor.BLUE, BarStyle.SOLID);
                     bukkitScheduler.runTaskTimerAsynchronously(blockyLife, () -> {
                         final Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
@@ -118,7 +121,9 @@ public record TimeModule(BlockyLife blockyLife, BukkitScheduler bukkitScheduler)
                             }
                         }
                     }, 0L, 0L);
-                }
+                default:
+                    //blockyLife.sendConsoleMessage();
+                    break;
             }
         }
     }
