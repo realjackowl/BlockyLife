@@ -35,7 +35,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        if(params.equalsIgnoreCase("pulse")){
+        if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
             return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
         }
         return null;

@@ -9,6 +9,7 @@ import eu.jackowl.blockylife.managers.ConfigManager;
 import eu.jackowl.blockylife.managers.PlayerDataManager;
 import eu.jackowl.blockylife.managers.WorldManager;
 import eu.jackowl.blockylife.modules.PulseModule;
+import eu.jackowl.blockylife.modules.TimeModule;
 import eu.jackowl.blockylife.placeholders.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
@@ -124,21 +125,26 @@ public class BlockyLife extends JavaPlugin {
         return stillLower60Modifier;
     }
 
-    private void initDisplay() {
-        sendConsoleMessage("[BlockyLife] Loading display...");
+    private void initModules() {
         if (getConfig().getBoolean("Modules.Pulse.Enabled")) {
-            if (Objects.equals(getConfig().getString("Modules.Pulse.Settings.ValueDisplay"), "ActionBar"))
+            sendConsoleMessage("[BlockyLife] Loading Pulse module..");
+            sendConsoleMessage("[BlockyLife] Loading display..");
+            if (Objects.equals(getConfig().getString("Modules.Pulse.Settings.ValueDisplay"), "ActionBar")) {
                 new ActionBarDisplay(this, bukkitScheduler).runDisplay();
-            //else if (Objects.equals(getConfig().getString("Modules.Pulse.Settings.ValueDisplay"), "BossBar"))
-            //new BossBarDisplay(this, bukkitScheduler);
+            }
+            sendConsoleMessage("[BlockyLife] Loading checkers..");
+            new PulseChecker(this, bukkitScheduler, new PulseModule()).runChecker();
+            new PlayerActivityChecker(this, bukkitScheduler).runChecker();
+            new AFKChecker().runChecker(this, bukkitScheduler);
+            sendConsoleMessage("[BlockyLife] Loading listeners..");
+            registerListener(new PlayerChatListener(this), new PlayerDeathListener(this), new PlayerQuitListener(this), new PlayerMoveListener(this), new PlayerJoinListener(this), new PlayerKickListener(this), new PlayerInteractListener(this), new EntityDamageByEntityListener(this));
+            sendConsoleMessage("[BlockyLife] Success!");
         }
-    }
-
-    private void initCheckers() {
-        sendConsoleMessage("[BlockyLife] Loading checkers...");
-        new PulseChecker(this, bukkitScheduler, new PulseModule()).runChecker();
-        new PlayerActivityChecker(this, bukkitScheduler).runChecker();
-        new AFKChecker().runChecker(this, bukkitScheduler);
+        if (getConfig().getBoolean("Modules.Time.Enabled")) {
+            sendConsoleMessage("[BlockyLife] Loading Time module...");
+            new TimeModule(this, bukkitScheduler).startModule();
+            sendConsoleMessage("[BlockyLife] Success!");
+        }
     }
 
     private void initPlaceholders() {
@@ -147,11 +153,6 @@ public class BlockyLife extends JavaPlugin {
             new PlaceholderAPI(this).register();
         } else
             sendConsoleMessage("[BlockyLife] PlaceholderAPI is not installed");
-    }
-
-    private void initListeners() {
-        sendConsoleMessage("[BlockyLife] Loading listeners...");
-        registerListener(new PlayerChatListener(this), new PlayerDeathListener(this), new PlayerQuitListener(this), new PlayerMoveListener(this), new PlayerJoinListener(this), new PlayerKickListener(this), new PlayerInteractListener(this), new EntityDamageByEntityListener(this));
     }
 
     private void initWorlds() {
@@ -165,9 +166,7 @@ public class BlockyLife extends JavaPlugin {
         new ConfigManager(this).updateConfig();
         reloadConfig();
         initWorlds();
-        initListeners();
-        initCheckers();
-        initDisplay();
+        initModules();
         initPlaceholders();
     }
 

@@ -12,7 +12,7 @@ public record ConfigManager(BlockyLife blockyLife) {
     public void updateConfig() {
         File configFile = new File(blockyLife.dataFolder, "config.yml");
         try {
-            ConfigUpdater.update(blockyLife, "config.yml", configFile, Arrays.asList("AFKCheck", "Modules.Pulse.Translation"));
+            ConfigUpdater.update(blockyLife, "config.yml", configFile, Arrays.asList("AFKCheck", "Modules.Pulse"));
         } catch (IOException e) {
             e.printStackTrace();
         }

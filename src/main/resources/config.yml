@@ -1,4 +1,4 @@
-Version: 2
+Version: 3
 AFKCheck: 700
 Modules:
   Pulse:
@@ -19,6 +19,14 @@ Modules:
     Translation:
       Titles:
         CalmTitle: "&cSlow Down"
-        CalmSubtitle: "&cNOW"
+        CalmSubtitle: "#FF5555NOW"
         MoveTitle: "&cMove"
         MoveSubtitle: "&cNOW"
+  Time:
+    Enabled: true
+    Settings:
+      MainWorld: world
+      SynchronizeTime: true
+      TimeDisplay: BossBar
+      TimeFormat: 24H
+      ValueFormat: "&a{0}:{1}"
