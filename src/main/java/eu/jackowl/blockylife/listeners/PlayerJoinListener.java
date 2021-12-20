@@ -14,7 +14,7 @@ public record PlayerJoinListener(BlockyLife blockyLife) implements Listener {
     @EventHandler
     private void onJoin(@NotNull PlayerJoinEvent e) {
         final UUID playerUUID = e.getPlayer().getUniqueId();
-        PlayerDataManager.createData(playerUUID);
-        blockyLife.setPulse(playerUUID, Float.parseFloat((String) PlayerDataManager.getObject(playerUUID, "pulse")));
+        PlayerDataManager.createData(playerUUID, blockyLife);
+        blockyLife.setPulse(playerUUID, Float.parseFloat((String) PlayerDataManager.getObject(playerUUID, "pulse", blockyLife)));
     }
 }
