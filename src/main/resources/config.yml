@@ -25,6 +25,7 @@ Modules:
   Time:
     Enabled: true
     Settings:
+      BarColor: BLUE
       MainWorld: world
       SynchronizeTime: true
       TimeDisplay: BossBar

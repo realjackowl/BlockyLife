@@ -128,7 +128,7 @@ public class BlockyLife extends JavaPlugin {
         return stillLower60Modifier;
     }
 
-    private final BossBar bossBar = Bukkit.createBossBar("Time", BarColor.BLUE, BarStyle.SOLID);
+    private final BossBar bossBar = Bukkit.createBossBar("Time", BarColor.valueOf(getConfig().getString("Modules.Time.Settings.BarColor")), BarStyle.SOLID);
 
     public BossBar getBossBar() { return bossBar; }
 

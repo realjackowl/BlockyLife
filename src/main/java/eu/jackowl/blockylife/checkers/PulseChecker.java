@@ -6,6 +6,7 @@ import eu.jackowl.blockylife.modules.PulseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -57,7 +58,7 @@ public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitSchedule
         }, 20L, 20L);
     }
 
-    private void killPlayer(Player p) {
+    private void killPlayer(@NotNull Player p) {
         p.setHealth(0.0D);
     }
 }
