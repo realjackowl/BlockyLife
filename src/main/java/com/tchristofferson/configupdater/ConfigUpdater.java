@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -21,7 +22,7 @@ public class ConfigUpdater {
         update(plugin, resourceName, toUpdate, Arrays.asList(ignoredSections));
     }
 
-    public static void update(Plugin plugin, String resourceName, File toUpdate, List<String> ignoredSections) throws IOException {
+    public static void update(@NotNull Plugin plugin, String resourceName, @NotNull File toUpdate, List<String> ignoredSections) throws IOException {
         Preconditions.checkArgument(toUpdate.exists(), "The toUpdate file doesn't exist!");
 
         FileConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(Objects.requireNonNull(plugin.getResource(resourceName)), StandardCharsets.UTF_8));
@@ -98,8 +99,8 @@ public class ConfigUpdater {
     }
 
     //Returns a map of key comment pairs. If a key doesn't have any comments it won't be included in the map.
-    private static Map<String, String> parseComments(Plugin plugin, String resourceName, FileConfiguration defaultConfig) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(plugin.getResource(resourceName))));
+    private static @NotNull Map<String, String> parseComments(@NotNull Plugin plugin, String resourceName, FileConfiguration defaultConfig) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(resourceName)));
         Map<String, String> comments = new LinkedHashMap<>();
         StringBuilder commentBuilder = new StringBuilder();
         KeyBuilder keyBuilder = new KeyBuilder(defaultConfig, SEPARATOR);
@@ -140,7 +141,7 @@ public class ConfigUpdater {
         return comments;
     }
 
-    private static Map<String, String> parseIgnoredSections(File toUpdate, FileConfiguration currentConfig, Map<String, String> comments, List<String> ignoredSections) throws IOException {
+    private static @NotNull Map<String, String> parseIgnoredSections(File toUpdate, FileConfiguration currentConfig, Map<String, String> comments, @NotNull List<String> ignoredSections) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(toUpdate));
         Map<String, String> ignoredSectionsValues = new LinkedHashMap<>(ignoredSections.size());
         KeyBuilder keyBuilder = new KeyBuilder(currentConfig, SEPARATOR);
@@ -164,7 +165,7 @@ public class ConfigUpdater {
                     }
                 }
             }
-            
+
             keyBuilder.parseLine(trimmedLine);
             String fullKey = keyBuilder.toString();
 
@@ -211,7 +212,7 @@ public class ConfigUpdater {
         return ignoredSectionsValues;
     }
 
-    private static void writeCommentIfExists(Map<String, String> comments, BufferedWriter writer, String fullKey, String indents) throws IOException {
+    private static void writeCommentIfExists(@NotNull Map<String, String> comments, BufferedWriter writer, String fullKey, String indents) throws IOException {
         String comment = comments.get(fullKey);
 
         //Comments always end with new line (\n)
@@ -221,7 +222,7 @@ public class ConfigUpdater {
     }
 
     //Input: 'key1.key2' Result: 'key1'
-    private static void removeLastKey(StringBuilder keyBuilder) {
+    private static void removeLastKey(@NotNull StringBuilder keyBuilder) {
         if (keyBuilder.length() == 0)
             return;
 
@@ -233,7 +234,7 @@ public class ConfigUpdater {
         keyBuilder.replace(minIndex, keyBuilder.length(), "");
     }
 
-    private static void appendNewLine(StringBuilder builder) {
+    private static void appendNewLine(@NotNull StringBuilder builder) {
         if (builder.length() > 0)
             builder.append("\n");
     }

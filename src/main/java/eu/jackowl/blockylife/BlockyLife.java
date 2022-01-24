@@ -211,7 +211,7 @@ public class BlockyLife extends JavaPlugin {
         }
     }
 
-    public static String translateMessage(String messageString) {
+    public static @NotNull String translateMessage(String messageString) {
         Pattern messagePattern = Pattern.compile("#[a-fA-F0-9]{6}");
         Matcher messageMatcher = messagePattern.matcher(messageString);
         while (messageMatcher.find()) {

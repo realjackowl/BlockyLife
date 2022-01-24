@@ -1,7 +1,6 @@
 package eu.jackowl.blockylife.checkers;
 
 import eu.jackowl.blockylife.BlockyLife;
-import eu.jackowl.blockylife.managers.PlayerDataManager;
 import eu.jackowl.blockylife.modules.PulseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -26,14 +25,11 @@ public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitSchedule
                         if (!p.hasPermission("blockylife.bypass")) {
                             final UUID playerUUID = p.getUniqueId();
                             if (!blockyLife.getAfkList().contains(playerUUID)) {
-                                //for(String configEntry : config.getStringList("path")) {
-                                //}
                                 bukkitScheduler.runTaskAsynchronously(blockyLife, () -> {
                                     final double playerPulse = blockyLife.getPulse(playerUUID);
                                     if (playerPulse > 220) {
                                         bukkitScheduler.runTask(blockyLife, () -> killPlayer(p));
                                         blockyLife.setPulse(playerUUID, 80);
-                                        PlayerDataManager.saveData(playerUUID, blockyLife);
                                     } else if (playerPulse > 190.00 && playerPulse < 220.00) {
                                         pulseModule.sendBreath(p);
                                         p.sendTitle(calmTitle, calmSubtitle, 10, 70, 20);
@@ -48,6 +44,7 @@ public record PulseChecker(BlockyLife blockyLife, BukkitScheduler bukkitSchedule
                                         //p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(blockyLife.getConfig().getString("Modules.Pulse.Translation.Messages.Slowdown"))));
                                     } else if (playerPulse < 20.00) {
                                         bukkitScheduler.runTask(blockyLife, () -> killPlayer(p));
+                                        blockyLife.setPulse(playerUUID, 80);
                                     }
                                 });
                             }
