@@ -6,7 +6,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 public class BreathCalculator {
-    public static @NotNull Location run(@NotNull Player p, @NotNull Location center, double radius, double angleInRadian) {
+    public static @NotNull Location calculateBreath(@NotNull Player p, @NotNull Location center, double radius, double angleInRadian) {
         final double rotation = Math.toRadians((p.getLocation().getYaw() + 90) % 360);
         final double x = center.getX() + radius * Math.cos(angleInRadian + rotation);
         final double z = center.getZ() + radius * Math.sin(angleInRadian + rotation);

@@ -1,33 +1,48 @@
-Version: 3
-AFKCheck: 700
+Version: 4 #Config version
+AFKCheck: 700 #Frequency of AFKChecker in ticks
 Modules:
   Pulse:
-    Enabled: true
+    Enabled: true #You can disable it using false
     Settings:
-      ValueDisplay: ActionBar
+      ValueDisplay: ActionBar #You can also disable it with "off" or "disabled", ...
       MessageDisplay: Title
       Modifiers:
-        LEFT_CLICK: 1.5
-        JUMP: 1.0
-        JUMP_SPRINT: 2.0
-        MOVE: 0.025
-        MOVE_LOWER_80: 0.0005
-        SPRINT: 0.1
-        STILL_HIGHER_80: 1.25
-        STILL_LOWER_80: 0.15
-        STILL_LOWER_60: 0.05
+        LEFT_CLICK: 1.5 # +
+        JUMP: 1.0 # +
+        JUMP_SPRINT: 2.0 # +
+        MOVE: 0.025 # -
+        MOVE_LOWER_80: 0.0005 # -
+        SPRINT: 0.1 # +
+        STILL_HIGHER_80: 1.25 # -
+        STILL_LOWER_80: 0.15 # -
+        STILL_LOWER_60: 0.05 # -
+      Ranges:
+        '1':
+          Minimum: 220
+          Actions: KILL
+        '2':
+          Maximum: 220
+          Minimum: 200
+          Actions: BREATH, CALM_TITLE
+        '3':
+          Maximum: 200
+          Minimum: 120
+          Actions: BREATH
+        '4':
+          Maximum: 20
+          Actions: KILL
     Translation:
       Titles:
         CalmTitle: "&cSlow Down"
-        CalmSubtitle: "#FF5555NOW"
+        CalmSubtitle: "#FF5554NOW"
         MoveTitle: "&cMove"
         MoveSubtitle: "&cNOW"
   Time:
-    Enabled: true
+    Enabled: true #You can disable it using false
     Settings:
       BarColor: BLUE
-      MainWorld: world
-      SynchronizeTime: true
-      TimeDisplay: BossBar
-      TimeFormat: 24H
-      ValueFormat: "&a{0}:{1}"
+      MainWorld: world #A world by which time counts
+      SynchronizeTime: true #Synchronize time between main world and other worlds, can be set to false
+      TimeDisplay: BossBar #ActionBar/BossBar
+      TimeFormat: 24H #Choose between 24H and 12H format
+      ValueFormat: "&a{0}:{1}" #Use {2} for AM/PM, {0} stands for hours, {1} stands for minutes

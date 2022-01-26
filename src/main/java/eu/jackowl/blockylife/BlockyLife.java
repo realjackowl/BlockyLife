@@ -19,6 +19,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +34,8 @@ import java.util.regex.Pattern;
 public class BlockyLife extends JavaPlugin {
 
     private final BukkitScheduler bukkitScheduler = Bukkit.getScheduler();
+
+    public final FileConfiguration configFile = this.getConfig();
 
     private final HashMap<UUID, Double> pulse = new HashMap<>();
 
@@ -170,7 +173,6 @@ public class BlockyLife extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        new ConfigManager(this).updateConfig();
         reloadConfig();
         initWorlds();
         initModules();

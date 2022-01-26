@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public record PlayerActivityChecker(BlockyLife blockyLife, @NotNull BukkitScheduler bukkitScheduler) {
-
     public void runChecker() {
         bukkitScheduler.scheduleSyncRepeatingTask(blockyLife, () -> {
             if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {

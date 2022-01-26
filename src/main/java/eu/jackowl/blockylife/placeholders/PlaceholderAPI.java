@@ -25,7 +25,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "0.1.0";
+        return "0.2.0";
     }
 
     @Override
@@ -35,6 +35,12 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
+        if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
+            return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
+        }
+        if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
+            return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
+        }
         if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
             return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
         }

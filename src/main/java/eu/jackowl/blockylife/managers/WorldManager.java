@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 public record WorldManager(BlockyLife blockyLife) {
-
     public void loadWorlds() {
         List<String> worldList = blockyLife.getWorldList();
         final File file = new File(blockyLife.dataFolder, File.separator + "worlds.yml");
