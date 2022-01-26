@@ -38,12 +38,6 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
             return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
         }
-        if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
-            return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
-        }
-        if (params.equalsIgnoreCase("pulse") && plugin.getConfig().getBoolean("Modules.Pulse.Enabled")) {
-            return Long.toString(Math.round(plugin.getPulse(player.getUniqueId())));
-        }
         return null;
     }
 }
